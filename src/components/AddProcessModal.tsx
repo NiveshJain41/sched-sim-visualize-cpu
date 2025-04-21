@@ -10,6 +10,7 @@ export interface Process {
   id: string;
   name: string;
   burstTime: number;
+  arrivalTime: number;
   priority?: number;
 }
 
@@ -28,6 +29,7 @@ export function AddProcessModal({
 }: AddProcessModalProps) {
   const [name, setName] = useState(editingProcess?.name || "");
   const [burstTime, setBurstTime] = useState<string>(editingProcess?.burstTime?.toString() || "");
+  const [arrivalTime, setArrivalTime] = useState<string>(editingProcess?.arrivalTime?.toString() || "");
   const [priority, setPriority] = useState<string>(editingProcess?.priority?.toString() || "");
   
   const isEditing = !!editingProcess;
@@ -46,6 +48,12 @@ export function AddProcessModal({
       return;
     }
 
+    const parsedArrivalTime = parseFloat(arrivalTime);
+    if (isNaN(parsedArrivalTime) || parsedArrivalTime < 0) {
+      toast.error("Please enter a valid arrival time (0 or greater)");
+      return;
+    }
+
     const parsedPriority = priority ? parseInt(priority) : undefined;
     if (priority && (isNaN(parsedPriority) || parsedPriority < 0)) {
       toast.error("Please enter a valid priority (0 or greater)");
@@ -56,6 +64,7 @@ export function AddProcessModal({
       id: editingProcess?.id || crypto.randomUUID(),
       name: name.trim(),
       burstTime: parsedBurstTime,
+      arrivalTime: parsedArrivalTime,
       priority: parsedPriority
     };
 
@@ -65,6 +74,7 @@ export function AddProcessModal({
     // Reset form after submission
     setName("");
     setBurstTime("");
+    setArrivalTime("");
     setPriority("");
     
     toast.success(`Process ${isEditing ? "updated" : "added"} successfully!`);
@@ -75,6 +85,7 @@ export function AddProcessModal({
     if (open) {
       setName(editingProcess?.name || "");
       setBurstTime(editingProcess?.burstTime?.toString() || "");
+      setArrivalTime(editingProcess?.arrivalTime?.toString() || "");
       setPriority(editingProcess?.priority?.toString() || "");
     }
   }, [open, editingProcess]);
@@ -93,6 +104,21 @@ export function AddProcessModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Process 1"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="arrivalTime">
+              Arrival Time (seconds)
+              <span className="text-destructive ml-1">*</span>
+            </Label>
+            <Input
+              id="arrivalTime"
+              value={arrivalTime}
+              onChange={(e) => setArrivalTime(e.target.value)}
+              placeholder="e.g., 0"
+              type="number"
+              min="0"
+              step="0.1"
             />
           </div>
           <div className="space-y-2">

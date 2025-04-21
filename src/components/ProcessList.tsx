@@ -46,6 +46,7 @@ export function ProcessList({ processes, onEdit, onDelete, onClearAll }: Process
             <TableHeader>
               <TableRow>
                 <TableHead>Process Name</TableHead>
+                <TableHead>Arrival Time (s)</TableHead>
                 <TableHead>Burst Time (s)</TableHead>
                 <TableHead>Priority</TableHead>
                 <TableHead className="w-[100px] text-right">Actions</TableHead>
@@ -55,6 +56,7 @@ export function ProcessList({ processes, onEdit, onDelete, onClearAll }: Process
               {processes.map((process) => (
                 <TableRow key={process.id} className="animate-slide-in">
                   <TableCell className="font-medium">{process.name}</TableCell>
+                  <TableCell>{process.arrivalTime}</TableCell>
                   <TableCell>{process.burstTime}</TableCell>
                   <TableCell>{process.priority ?? "N/A"}</TableCell>
                   <TableCell className="text-right space-x-2">
