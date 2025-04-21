@@ -54,7 +54,7 @@ export function GanttChart({ algorithmName, scheduledProcesses }: GanttChartProp
         <CardTitle className="text-lg">{algorithmName} Gantt Chart</CardTitle>
       </CardHeader>
       <CardContent className="pt-0">
-        <ScrollArea className="w-full" orientation="horizontal">
+        <ScrollArea className="w-full">
           <div className="relative min-w-[600px]">
             {/* Time markers */}
             <div className="flex mb-2 border-b">
