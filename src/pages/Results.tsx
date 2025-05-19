@@ -9,6 +9,7 @@ import { AlgorithmComparisonTable } from "@/components/AlgorithmComparisonTable"
 import { BestAlgorithmAnalysis } from "@/components/BestAlgorithmAnalysis";
 import { runAlgorithms, AlgorithmResult } from "@/lib/cpuScheduling";
 import { toast } from "sonner";
+import { ScrollAreaHorizontal } from "@/components/ui/scroll-area";
 
 interface SimulationData {
   processes: Process[];
@@ -22,6 +23,17 @@ const Results = () => {
   const simulationData = location.state?.simulationData as SimulationData | undefined;
   const [results, setResults] = useState<AlgorithmResult[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Group results by category
+  const basicResults = results.filter(r => 
+    !['Genetic Algorithm (GA)', 'Particle Swarm Optimization (PSO)', 
+      'Ant Colony Optimization (ACO)', 'Simulated Annealing (SA)'].includes(r.name)
+  );
+  
+  const advancedResults = results.filter(r => 
+    ['Genetic Algorithm (GA)', 'Particle Swarm Optimization (PSO)', 
+      'Ant Colony Optimization (ACO)', 'Simulated Annealing (SA)'].includes(r.name)
+  );
 
   // If no data was passed, redirect back to the homepage
   useEffect(() => {
@@ -124,13 +136,32 @@ const Results = () => {
               {/* Gantt Charts Section */}
               <div className="space-y-6">
                 <h2 className="text-2xl font-semibold">Gantt Charts</h2>
-                {results.map((result) => (
-                  <GanttChart 
-                    key={result.name} 
-                    algorithmName={result.name} 
-                    scheduledProcesses={result.scheduledProcesses} 
-                  />
-                ))}
+                
+                {basicResults.length > 0 && (
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-medium">Basic Algorithms</h3>
+                    {basicResults.map((result) => (
+                      <GanttChart 
+                        key={result.name} 
+                        algorithmName={result.name} 
+                        scheduledProcesses={result.scheduledProcesses} 
+                      />
+                    ))}
+                  </div>
+                )}
+                
+                {advancedResults.length > 0 && (
+                  <div className="space-y-6 mt-8">
+                    <h3 className="text-xl font-medium">Metaheuristic Algorithms</h3>
+                    {advancedResults.map((result) => (
+                      <GanttChart 
+                        key={result.name} 
+                        algorithmName={result.name} 
+                        scheduledProcesses={result.scheduledProcesses} 
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Comparison Table */}

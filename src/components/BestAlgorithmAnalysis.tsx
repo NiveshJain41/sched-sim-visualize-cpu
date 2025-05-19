@@ -2,6 +2,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlgorithmResult } from "@/lib/cpuScheduling";
+import { Badge } from "@/components/ui/badge";
 
 interface BestAlgorithmAnalysisProps {
   results: AlgorithmResult[];
@@ -59,6 +60,10 @@ export function BestAlgorithmAnalysis({ results }: BestAlgorithmAnalysisProps) {
   const bestOverall = normalizedScores.reduce((prev, curr) => 
     prev.score < curr.score ? prev : curr
   );
+
+  // Determine if the best is a traditional or metaheuristic algorithm
+  const isMetaheuristic = ['Genetic Algorithm (GA)', 'Particle Swarm Optimization (PSO)', 
+                          'Ant Colony Optimization (ACO)', 'Simulated Annealing (SA)'].includes(bestOverall.name);
   
   return (
     <Card className="w-full mb-6">
@@ -67,9 +72,14 @@ export function BestAlgorithmAnalysis({ results }: BestAlgorithmAnalysisProps) {
       </CardHeader>
       <CardContent className="pt-0 space-y-4">
         <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
-          <p className="font-semibold text-green-800 dark:text-green-300">
-            For this set of processes, <span className="font-bold">{bestOverall.name}</span> is the most efficient algorithm overall.
-          </p>
+          <div className="flex items-center gap-2 mb-2">
+            <p className="font-semibold text-green-800 dark:text-green-300">
+              For this set of processes, <span className="font-bold">{bestOverall.name}</span> is the most efficient algorithm overall.
+            </p>
+            <Badge variant={isMetaheuristic ? "secondary" : "outline"}>
+              {isMetaheuristic ? "Metaheuristic" : "Traditional"}
+            </Badge>
+          </div>
         </div>
         
         <div className="space-y-2">
@@ -85,10 +95,9 @@ export function BestAlgorithmAnalysis({ results }: BestAlgorithmAnalysisProps) {
         <div>
           <h3 className="font-semibold mb-2">Analysis:</h3>
           <p className="text-muted-foreground">
-            FCFS works well for processes that arrive in order of their burst times, but can lead to long waiting times otherwise. 
-            SJF minimizes waiting time but may cause starvation for longer processes. 
-            Round Robin ensures fairness by giving each process a time quantum, but has higher context switching overhead. 
-            Priority scheduling is effective when processes have different importance levels.
+            Traditional algorithms like FCFS, SJF, and Priority are deterministic but may not find optimal solutions for complex workloads. 
+            Metaheuristic algorithms (GA, PSO, ACO, SA) can often find better solutions for complex scenarios by exploring the solution 
+            space more thoroughly, at the cost of higher computational complexity and non-deterministic results.
           </p>
         </div>
       </CardContent>

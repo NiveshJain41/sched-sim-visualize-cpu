@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,31 +10,54 @@ import { ProcessList } from "@/components/ProcessList";
 import { AlgorithmSelection, Algorithm } from "@/components/AlgorithmSelection";
 import { FilePlus, Play } from "lucide-react";
 
-const algorithms: Algorithm[] = [
+const algorithms = [
   {
     id: "fcfs",
     name: "First-Come-First-Served (FCFS)",
-    description: "Processes are executed in the order they arrive in the ready queue. It's simple but can lead to the 'convoy effect' where short processes wait behind long ones."
+    description: "A non-preemptive algorithm that executes processes in the order they arrive in the ready queue.",
+    category: "basic"
   },
   {
     id: "sjf",
     name: "Shortest Job First (SJF)",
-    description: "Process with the smallest execution time is selected for execution next. Optimal for minimizing average waiting time, but requires knowing execution time in advance."
+    description: "A non-preemptive algorithm that selects the waiting process with the smallest execution time to execute next.",
+    category: "basic"
   },
   {
     id: "rr",
     name: "Round Robin (RR)",
-    description: "Each process is assigned a fixed time slot in a cyclic way. It's designed especially for time-sharing systems and provides good response time for interactive processes."
+    description: "A preemptive algorithm that assigns a fixed time unit per process, cycling through all processes in the ready queue.",
+    category: "basic"
   },
   {
     id: "priority",
     name: "Priority Scheduling",
-    description: "Processes are scheduled based on priority. Higher priority processes are executed first. Can lead to starvation of lower priority processes."
+    description: "A non-preemptive algorithm that executes processes based on priority. Lower numbers indicate higher priority.",
+    category: "basic"
   },
   {
-    id: "srtf",
-    name: "Shortest Remaining Time First (SRTF)",
-    description: "Preemptive version of SJF. If a new process arrives with a smaller execution time than the remaining time of the current process, the current process is preempted."
+    id: "ga",
+    name: "Genetic Algorithm (GA)",
+    description: "Inspired by natural selection, GA evolves different process sequences to find optimal scheduling solutions by minimizing waiting time.",
+    category: "advanced"
+  },
+  {
+    id: "pso",
+    name: "Particle Swarm Optimization (PSO)",
+    description: "Models process scheduling as particles moving in search space, optimizing positions based on individual and group experience.",
+    category: "advanced"
+  },
+  {
+    id: "aco",
+    name: "Ant Colony Optimization (ACO)",
+    description: "Mimics ant foraging behavior using pheromone trails to find optimal process scheduling sequences.",
+    category: "advanced"
+  },
+  {
+    id: "sa",
+    name: "Simulated Annealing (SA)",
+    description: "Inspired by metal annealing, this algorithm explores many solutions initially, then gradually focuses on promising regions.",
+    category: "advanced"
   }
 ];
 

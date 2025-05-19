@@ -1,4 +1,10 @@
 import { Process } from "@/components/AddProcessModal";
+import { 
+  geneticAlgorithm,
+  particleSwarmOptimization,
+  antColonyOptimization,
+  simulatedAnnealing
+} from "./advancedAlgorithms";
 
 export interface ScheduledProcess extends Process {
   startTime: number;
@@ -365,6 +371,23 @@ export const runAlgorithms = (
   
   if (selectedAlgorithms.includes("priority")) {
     results.push(priorityScheduling(processes));
+  }
+  
+  // Advanced algorithms
+  if (selectedAlgorithms.includes("ga")) {
+    results.push(geneticAlgorithm(processes));
+  }
+  
+  if (selectedAlgorithms.includes("pso")) {
+    results.push(particleSwarmOptimization(processes));
+  }
+  
+  if (selectedAlgorithms.includes("aco")) {
+    results.push(antColonyOptimization(processes));
+  }
+  
+  if (selectedAlgorithms.includes("sa")) {
+    results.push(simulatedAnnealing(processes));
   }
   
   return results;
