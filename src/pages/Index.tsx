@@ -128,6 +128,9 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
       <header className="container mx-auto py-12 px-4">
         <div className="max-w-5xl mx-auto text-center space-y-4">
+          {/* Project ID Header */}
+          <p className="text-sm font-medium text-muted-foreground mb-2">Project Id - SE(OS) - VI - T054</p>
+          
           <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent cpu-gradient">
             CPU Scheduling Simulator
           </h1>
