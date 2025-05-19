@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,7 +10,7 @@ export interface Algorithm {
   id: string;
   name: string;
   description: string;
-  category?: "basic" | "advanced";
+  category: "basic" | "advanced";
 }
 
 interface AlgorithmSelectionProps {

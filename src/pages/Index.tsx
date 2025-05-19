@@ -1,10 +1,10 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { FileUpload } from "@/components/FileUpload";
 import { AddProcessModal, Process } from "@/components/AddProcessModal";
 import { ProcessList } from "@/components/ProcessList";
 import { AlgorithmSelection, Algorithm } from "@/components/AlgorithmSelection";
@@ -15,57 +15,54 @@ const algorithms = [
     id: "fcfs",
     name: "First-Come-First-Served (FCFS)",
     description: "A non-preemptive algorithm that executes processes in the order they arrive in the ready queue.",
-    category: "basic"
+    category: "basic" as const
   },
   {
     id: "sjf",
     name: "Shortest Job First (SJF)",
     description: "A non-preemptive algorithm that selects the waiting process with the smallest execution time to execute next.",
-    category: "basic"
+    category: "basic" as const
   },
   {
     id: "rr",
     name: "Round Robin (RR)",
     description: "A preemptive algorithm that assigns a fixed time unit per process, cycling through all processes in the ready queue.",
-    category: "basic"
+    category: "basic" as const
   },
   {
     id: "priority",
     name: "Priority Scheduling",
     description: "A non-preemptive algorithm that executes processes based on priority. Lower numbers indicate higher priority.",
-    category: "basic"
+    category: "basic" as const
   },
   {
     id: "ga",
     name: "Genetic Algorithm (GA)",
     description: "Inspired by natural selection, GA evolves different process sequences to find optimal scheduling solutions by minimizing waiting time.",
-    category: "advanced"
+    category: "advanced" as const
   },
   {
     id: "pso",
     name: "Particle Swarm Optimization (PSO)",
     description: "Models process scheduling as particles moving in search space, optimizing positions based on individual and group experience.",
-    category: "advanced"
+    category: "advanced" as const
   },
   {
     id: "aco",
     name: "Ant Colony Optimization (ACO)",
     description: "Mimics ant foraging behavior using pheromone trails to find optimal process scheduling sequences.",
-    category: "advanced"
+    category: "advanced" as const
   },
   {
     id: "sa",
     name: "Simulated Annealing (SA)",
     description: "Inspired by metal annealing, this algorithm explores many solutions initially, then gradually focuses on promising regions.",
-    category: "advanced"
+    category: "advanced" as const
   }
 ];
 
 const Index = () => {
   const navigate = useNavigate();
-  
-  // State for the uploaded file
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   
   // State for manually added processes
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -74,11 +71,6 @@ const Index = () => {
   
   // State for selected algorithms
   const [selectedAlgorithms, setSelectedAlgorithms] = useState<string[]>([]);
-
-  // Handle file upload
-  const handleFileUploaded = (file: File | null) => {
-    setUploadedFile(file);
-  };
 
   // Handle process addition/editing
   const handleAddProcess = (process: Process) => {
@@ -111,8 +103,8 @@ const Index = () => {
   // Handle starting the simulation
   const handleStartSimulation = () => {
     // Validate inputs
-    if (!uploadedFile && processes.length === 0) {
-      toast.error("Please upload a Python file or add processes manually before starting the simulation.");
+    if (processes.length === 0) {
+      toast.error("Please add processes manually before starting the simulation.");
       return;
     }
 
@@ -126,8 +118,7 @@ const Index = () => {
       state: {
         simulationData: {
           processes,
-          selectedAlgorithms,
-          file: uploadedFile
+          selectedAlgorithms
         }
       }
     });
@@ -141,22 +132,13 @@ const Index = () => {
             CPU Scheduling Simulator
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Test and compare different CPU scheduling algorithms using your Python code
-            or manually added processes.
+            Test and compare different CPU scheduling algorithms using manually added processes.
           </p>
         </div>
       </header>
 
       <main className="container mx-auto px-4 pb-16">
         <div className="max-w-5xl mx-auto grid gap-8">
-          {/* File Upload Section */}
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">Upload Python File</h2>
-            <FileUpload onFileUploaded={handleFileUploaded} />
-          </section>
-
-          <Separator className="my-2" />
-
           {/* Manual Process Addition Section */}
           <section>
             <div className="flex items-center justify-between mb-4">
