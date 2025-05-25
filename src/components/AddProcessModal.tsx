@@ -17,7 +17,7 @@ export interface Process {
 interface AddProcessModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAddProcess: (process: Process) => void;
+  onAddProcess: (process: Omit<Process, 'id'>) => void;
   editingProcess?: Process | null;
 }
 
@@ -60,15 +60,14 @@ export function AddProcessModal({
       return;
     }
 
-    const newProcess: Process = {
-      id: editingProcess?.id || crypto.randomUUID(),
+    const processData = {
       name: name.trim(),
       burstTime: parsedBurstTime,
       arrivalTime: parsedArrivalTime,
       priority: parsedPriority
     };
 
-    onAddProcess(newProcess);
+    onAddProcess(processData);
     onOpenChange(false);
     
     // Reset form after submission
@@ -92,24 +91,25 @@ export function AddProcessModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-slate-800 border-slate-700">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Edit Process" : "Add New Process"}</DialogTitle>
+          <DialogTitle className="text-white">{isEditing ? "Edit Process" : "Add New Process"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Process Name</Label>
+            <Label htmlFor="name" className="text-slate-200">Process Name</Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Process 1"
+              className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="arrivalTime">
+            <Label htmlFor="arrivalTime" className="text-slate-200">
               Arrival Time (seconds)
-              <span className="text-destructive ml-1">*</span>
+              <span className="text-red-400 ml-1">*</span>
             </Label>
             <Input
               id="arrivalTime"
@@ -119,12 +119,13 @@ export function AddProcessModal({
               type="number"
               min="0"
               step="0.1"
+              className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="burstTime">
+            <Label htmlFor="burstTime" className="text-slate-200">
               Burst Time (seconds)
-              <span className="text-destructive ml-1">*</span>
+              <span className="text-red-400 ml-1">*</span>
             </Label>
             <Input
               id="burstTime"
@@ -134,12 +135,13 @@ export function AddProcessModal({
               type="number"
               min="0.1"
               step="0.1"
+              className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="priority">
+            <Label htmlFor="priority" className="text-slate-200">
               Priority (Optional)
-              <span className="text-muted-foreground ml-1 text-xs">Lower value = higher priority</span>
+              <span className="text-slate-400 ml-1 text-xs">Lower value = higher priority</span>
             </Label>
             <Input
               id="priority"
@@ -148,6 +150,7 @@ export function AddProcessModal({
               placeholder="e.g., 1"
               type="number"
               min="0"
+              className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
             />
           </div>
           <DialogFooter className="pt-4">
@@ -155,10 +158,14 @@ export function AddProcessModal({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              className="border-slate-600 text-slate-200 hover:bg-slate-700"
             >
               Cancel
             </Button>
-            <Button type="submit">
+            <Button 
+              type="submit"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
+            >
               {isEditing ? "Update" : "Add"} Process
             </Button>
           </DialogFooter>
